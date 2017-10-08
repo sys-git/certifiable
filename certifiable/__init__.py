@@ -60,10 +60,3 @@ __all__ = [
     'certify_only_one',
     'make_certifier',
 ]
-
-del complex
-del core
-del errors
-del operators
-del utils
-del __version__
