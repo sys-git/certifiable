@@ -1,0 +1,41 @@
+# Config file for automatic testing at travis-ci.org
+# This file will be regenerated if you run travis_pypi_setup.py
+
+language: python
+python:
+  - pypy
+  - pypy3
+  - 3.6
+  - 3.5
+  - 3.4
+  - 3.3
+  - 2.7
+  - 2.6
+
+install:
+  - "pip install -U tox-travis"
+  - "pip install coveralls"
+  - "pip install flake8"
+  - "pip install -r requirements/requirements.txt"
+  - "pip install -r requirements/requirements-test.txt"
+
+# command to run tests, e.g. python setup.py test
+script:
+  - "tox"
+  - "flake8 certifiable setup.py"
+  - "nosetests --with-coverage --cover-erase --cover-package=certifiable --cover-html --cover-branches"
+
+after_success:
+  - "coveralls"
+
+# After you create the Github repo and add it to Travis, run the
+# travis_pypi_setup.py script to finish PyPI deployment setup
+deploy:
+  provider: pypi
+  distributions: sdist bdist_wheel
+  user: francishorsman
+  password:
+    secure: PLEASE_REPLACE_ME
+  on:
+    tags: true
+    python: 2.7
