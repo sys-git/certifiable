@@ -41,7 +41,7 @@ test_requirements.extend([
 
 certifiable = {}
 with open(os.path.join(here, 'certifiable', '__version__.py')) as f:
-    exec (f.read(), certifiable)
+    exec(f.read(), certifiable)
 version = certifiable['__version__']
 
 setup(
