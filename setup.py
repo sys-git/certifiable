@@ -13,6 +13,7 @@
 """The setup script."""
 
 import os
+import sys
 
 from setuptools import find_packages, setup
 
@@ -41,8 +42,21 @@ test_requirements.extend([
 
 about = {}
 with open(os.path.join(here, 'certifiable', '__version__.py')) as f:
-    exec(f.read(), about)
+    exec (f.read(), about)
 version = about['__version__']
+
+# 'setup.py publish' shortcut.
+if sys.argv[-1] == 'publish':
+    version = about['__version__']
+    print("Tagging release as: {v}".format(v=version))
+    os.system("git tag -a {v} -m 'version {v}'".format(v=version))
+    os.system('git push --tags')
+    os.system('python setup.py sdist bdist_wheel')
+    os.system('twine upload dist/*')
+    sys.exit()
+elif sys.argv[-1] == 'test':
+    os.system('make test')
+    sys.exit()
 
 setup(
     name='certifiable',

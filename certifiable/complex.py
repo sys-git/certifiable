@@ -17,8 +17,6 @@ __all__ = [
     'certify_tuple',
     'certify_list',
     'certify_email',
-    'certify_json',
-    'certify_html',
     'certify_dict_schema',
     'certify_iterable_schema',
 ]
