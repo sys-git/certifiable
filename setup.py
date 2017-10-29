@@ -30,6 +30,7 @@ with open(os.path.join(here, 'requirements', 'requirements.txt')) as rq_file:
 
 setup_requirements = [
     'nose',
+    'email_validator',
 ]
 
 with open(os.path.join(here, 'requirements', 'requirements-test.txt')) as rq_file:
