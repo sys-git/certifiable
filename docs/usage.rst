@@ -4,7 +4,7 @@
 Usage
 =====
 
-Coming soon:
+To use certifiable in a project:
 
 .. include:: usage_required.rst
 .. include:: usage_basic.rst

@@ -11,26 +11,22 @@
 #
 """Top-level package for certifiable."""
 
-from .complex import (
-    certify_dict, certify_email, certify_html, certify_iterable, certify_json, certify_list,
-    certify_set, certify_tuple,
-)
-from .core import (
-    certify_bool, certify_bytes, certify_date, certify_enum, certify_int, certify_number,
-    certify_object, certify_text, certify_timestamp, certify_string, certify_enum_value,
-)
+from .__version__ import __author__, __email__, __keywords__, __short_description__, __version__
+from .complex import certify_dict, certify_dict_schema, certify_email, certify_iterable_schema, \
+    certify_list, certify_set, certify_tuple
+from .core import certify_bool, certify_bytes, certify_date, certify_enum, certify_enum_value, \
+    certify_int, certify_number, certify_object, certify_string, certify_text, certify_time, \
+    certify_timestamp
 from .errors import CertifierError, CertifierTypeError, CertifierValueError
 from .operators import (
     ALL, AND, ANY, NAND, XOR, certify_all, certify_any, certify_none, certify_only_one,
 )
-from .utils import make_certifier
-from .__version__ import __author__, __email__, __version__, __short_description__, __keywords__
+from .utils import certify_required, disable, enable, enable_from_env, is_enabled, make_certifier
 
 __all__ = [
     'certify_dict',
-    'certify_email',
-    'certify_html',
-    'certify_iterable',
+    'certify_dict_schema',
+    'certify_iterable_schema',
     'certify_json',
     'certify_list',
     'certify_set',
@@ -46,6 +42,7 @@ __all__ = [
     'certify_text',
     'certify_string',
     'certify_timestamp',
+    'certify_time',
     'CertifierError',
     'CertifierTypeError',
     'CertifierValueError',
@@ -59,4 +56,9 @@ __all__ = [
     'certify_none',
     'certify_only_one',
     'make_certifier',
+    'certify_required',
+    'is_enabled',
+    'enable',
+    'disable',
+    'enable_from_env',
 ]

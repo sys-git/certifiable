@@ -58,7 +58,7 @@ Example::
         func(value, **kwargs)
       File "certifiable/certifiable.py", line 512, in certify_bool
         required=required,
-    certifiable.errors.CertifierTypeError: expected bool, but value is of type 'str'
+    CertifierTypeError: expected bool, but value is of type 'str'
     >>>
 
 

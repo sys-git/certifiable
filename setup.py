@@ -12,7 +12,6 @@
 
 """The setup script."""
 
-
 import os
 
 from setuptools import find_packages, setup
@@ -40,19 +39,19 @@ test_requirements.extend([
     'nose-parameterized',
 ])
 
-certifiable = {}
+about = {}
 with open(os.path.join(here, 'certifiable', '__version__.py')) as f:
-    exec(f.read(), certifiable)
-version = certifiable['__version__']
+    exec(f.read(), about)
+version = about['__version__']
 
 setup(
     name='certifiable',
-    version=certifiable['__version__'],
-    description=certifiable['__short_description__'],
+    version=about['__version__'],
+    description=about['__short_description__'],
     long_description=readme + '\n\n' + history,
-    author=certifiable['__author__'],
-    author_email=certifiable['__email__'],
-    url='https://github.com/sys-git/certifiable',
+    author=about['__author__'],
+    author_email=about['__email__'],
+    url=about['__url__'],
     packages=find_packages(include=['certifiable']),
     entry_points={
         'console_scripts': [
@@ -63,16 +62,15 @@ setup(
     install_requires=requirements,
     license="MIT license",
     zip_safe=False,
-    keywords=certifiable['__keywords__'],
+    keywords=about['__keywords__'],
     classifiers=[
-        'Development Status :: 2 - Pre-Alpha',
+        'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
         'Natural Language :: English',
         "Programming Language :: Python :: 2",
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: Implementation :: CPython',

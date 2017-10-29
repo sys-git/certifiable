@@ -32,10 +32,73 @@ It can validate the following types:
 * Dict
 * Timestamp
 * Date
+* Time
 * Json
 * html
 * Object
 * Email
+
+And also these more `complex` or compound types into which you can pass `other` certifiers:
+
+* List
+* Tuple
+* Set
+* Iterable
+* Dict
+* Json
+* Html
+* Email
+
+There are logical operators to combine certifiers:
+
+* ANY   (certify_only_one)
+* AND   (certify_all)
+* ALL   (certify_all)
+* NAND  (certify_none)
+* XOR   (certify_only_one)
+
+Custom Certifier
+----------------
+
+Use the `make_certifier` decorator and (optionally) bake-in some args and kwargs (any return value
+from a certifier is ignored) to create your own certifier (first arg must be the value to certify):
+
+```python
+    >>> @make_certifier
+    ... def my_certifier(value, *baked_args, **baked_kwargs):
+    ...     print value
+    ...     print baked_args
+    ...     print baked_kwargs
+    ...     baked_kwargs['data'].append('green')
+    ...     if len(baked_kwargs['data'])==2:
+    ...         raise MyError('damn!')
+
+    >>> args_to_bake = ('eggs', 'ham')
+    >>> kwargs_to_bake = dict(spam='lots', data=[])
+    >>> certifier = my_certifier(*args_to_bake, **kwargs_to_bake)
+```
+certifier can now be used as an argument to other certifiers:
+
+```
+    >>> certify_list(
+    ...     [1,'a'],
+    ...     certifier=certifiers,
+    ...     min_len=2,
+    ...     max_len=5,
+    ...     required=True,
+    ... )
+    1
+    ('eggs', 'ham')
+    {'spam': 'lots', data: []}
+    'a'
+    ('eggs', 'ham')
+    {'spam': 'lots', data: ['green']}
+    Traceback (most recent call last):
+        ...
+        ...
+        ...
+    MyError: damn!
+```
 
 ##Example
 ```python
@@ -57,7 +120,7 @@ It can validate the following types:
         func(val, **kwargs)
       File "certifiable/core.py", line 302, in certify_bool
         required=required,
-    certifiable.errors.CertifierTypeError: expected bool, but value is of type 'int'
+    CertifierTypeError: expected bool, but value is of type 'int'
     >>>
 ```
 ##To install

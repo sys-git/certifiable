@@ -73,7 +73,7 @@ BROWSER := python -c "$$BROWSER_PYSCRIPT"
 help:
 	@python -c "$$PRINT_HELP_PYSCRIPT" < $(MAKEFILE_LIST)
 
-clean: clean-build clean-pyc clean-test ## remove all build, test, coverage and Python artifacts
+clean: clean-build clean-pyc clean-test clean-docs ## remove all build, test, coverage and Python artifacts
 
 
 clean-build: ## remove build artifacts
@@ -82,6 +82,9 @@ clean-build: ## remove build artifacts
 	rm -fr .eggs/
 	find . -name '*.egg-info' -exec rm -fr {} +
 	find . -name '*.egg' -exec rm -f {} +
+
+clean-docs: ## remove doc artifacts
+	rm -fr docs/_build
 
 clean-pyc: ## remove Python file artifacts
 	find . -name '*.pyc' -exec rm -f {} +
@@ -103,13 +106,12 @@ test: ## run tests quickly with the default Python
 		--processes=-1 --process-timeout=240
 
 
-test-all: ## run tests on every Python version with tox
+tox: ## run tests on every Python version with tox
 	tox
 
 coverage: ## check code coverage quickly with the default Python
 
 	$(NOSETESTS) $(TESTS_ABS) -v --logging-level=INFO \
-		--processes=-1 --process-timeout=240 \
 		--with-coverage --cover-erase \
 		--cover-package=certifiable \
 		--cover-html --cover-branches

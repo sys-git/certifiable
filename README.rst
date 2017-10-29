@@ -2,6 +2,9 @@
 Certifiable
 ===========
 
+TODO: DISABLE WITH ENVVAR.
+
+
 .. image:: https://img.shields.io/badge/Author:%20francis%20horsman-Available-brightgreen.svg?style=plastic
     :target: https://www.linkedin.com/in/francishorsman
 
@@ -44,10 +47,14 @@ Certifiable is a powerful runtime parameter validation library for python.
 
 Features
 --------
+--------
 
 Examples of all features can be found here: :ref:`usage`.
 
-It can validate the following *basic* types:
+Core types
+----------
+
+It can validate the following *core* types
 
 * Text
 * Unicode
@@ -60,12 +67,17 @@ It can validate the following *basic* types:
 * Decimal
 * Float
 * Enum
+* Enum value
 * Timestamp
 * Date
+* Time
 * Object
 
 
-And also these more `complex` or compound types into which you can pass `other` certifiers:
+Complex types
+-------------
+
+There are more `complex` or compound types into which you can pass `other` certifiers:
 
 * List
 * Tuple
@@ -76,7 +88,12 @@ And also these more `complex` or compound types into which you can pass `other` 
 * Html
 * Email
 
+
+Operators
+---------
+
 There are logical operators to combine certifiers:
+
 
 * ANY   (certify_only_one)
 * AND   (certify_all)
@@ -84,11 +101,49 @@ There are logical operators to combine certifiers:
 * NAND  (certify_none)
 * XOR   (certify_only_one)
 
+Custom Certifier
+----------------
+
+Use the `make_certifier` decorator and (optionally) bake-in some args and kwargs (any return value
+from a certifier is ignored) to create your own certifier (first arg must be the value to certify):
+
+>>> @make_certifier
+... def my_certifier(value, *baked_args, **baked_kwargs):
+...     print value
+...     print baked_args
+...     print baked_kwargs
+...     baked_kwargs['data'].append('green')
+...     if len(baked_kwargs['data'])==2:
+...         raise MyError('damn!')
+
+>>> args_to_bake = ('eggs', 'ham')
+>>> kwargs_to_bake = dict(spam='lots', data=[])
+>>> certifier = my_certifier(*args_to_bake, **kwargs_to_bake)
+
+certifier can now be used as an argument to other certifiers.
+
+>>> certify_list(
+...     [1,'a'],
+...     certifier=certifiers,
+...     min_len=2,
+...     max_len=5,
+...     required=True,
+... )
+1
+('eggs', 'ham')
+{'spam': 'lots', data: []}
+'a'
+('eggs', 'ham')
+{'spam': 'lots', data: ['green']}
+Traceback (most recent call last):
+    ...
+    ...
+    ...
+MyError: damn!
+
 
 Status
 ------
-
-ALPHA
 
 * Free software: MIT license
 * Documentation: https://certifiable.readthedocs.io.

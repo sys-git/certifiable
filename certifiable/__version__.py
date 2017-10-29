@@ -15,10 +15,12 @@ __all__ = [
     '__version__',
     '__short_description__',
     '__keywords__',
+    '__url__',
 ]
 
 __author__ = 'Francis Horsman'
 __email__ = 'francis.horsman@gmail.com'
-__version__ = '0.0.1'
+__version__ = '0.1'
 __short_description__ = 'Certifiers for everyone!'
 __keywords__ = ['certifiable', 'validation']
+__url__ = 'https://github.com/sys-git/certifiable'
