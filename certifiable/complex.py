@@ -158,8 +158,8 @@ def certify_iterable_schema(value, schema, required):
                 )
 
 
-def _certify_iterable(
-    cls, extra_cls, value=None, certifier=None, min_len=None, max_len=None, schema=None,
+def certify_iterable(
+    value, types, certifier=None, min_len=None, max_len=None, schema=None,
     required=True
 ):
     """
@@ -170,6 +170,8 @@ def _certify_iterable(
 
     :param iterable value:
         The value to be certified.
+    :param tuple(object) types:
+        A tuple of types of the expected iterable.
     :param func\None certifier:
         A function to be called on each value in the iterable to check that it is valid.
     :param int\None min_len:
@@ -196,13 +198,9 @@ def _certify_iterable(
         (_certify_int_param, 'min_len', min_len, dict(negative=False, required=False)),
     )
     # Check the type(s):
-    types = [cls]
-    if extra_cls:
-        types.extend(extra_cls)
-    types = tuple(types)
-    if not isinstance(value, types):
+    if types and not isinstance(value, types):
         raise CertifierTypeError(
-            message="value is not a tuple ({value_type!r})".format(
+            message="value is not an expected type ({value_type!r})".format(
                 value_type=value.__class__.__name__
             ),
             value=value,
@@ -222,7 +220,7 @@ def _certify_iterable(
                      "but {cls} is of length {actual}").format(
                 expected=max_len,
                 actual=len(value),
-                cls=cls.__name__,
+                cls=types,
             ),
             value=value,
             required=required,
@@ -263,10 +261,9 @@ def certify_set(
         The valid is invalid
     """
     certify_bool(include_collections, required=True)
-    return _certify_iterable(
-        set,
-        tuple([MutableSet, Set]) if include_collections else tuple(),
+    return certify_iterable(
         value=value,
+        types=tuple([set, MutableSet, Set]) if include_collections else tuple([set]),
         certifier=certifier,
         min_len=min_len,
         max_len=max_len,
@@ -310,10 +307,9 @@ def certify_tuple(value, certifier=None, min_len=None, max_len=None, required=Tr
     :raises CertifierValueError:
         The valid is invalid
     """
-    return _certify_iterable(
-        tuple,
-        tuple(),
+    return certify_iterable(
         value=value,
+        types=tuple([tuple]),
         certifier=certifier,
         min_len=min_len,
         max_len=max_len,
@@ -352,10 +348,9 @@ def certify_list(
         The valid is invalid
     """
     certify_bool(include_collections, required=True)
-    return _certify_iterable(
-        list,
-        tuple([MutableSequence, Sequence]) if include_collections else tuple(),
+    return certify_iterable(
         value=value,
+        types=tuple([list, MutableSequence, Sequence]) if include_collections else tuple([list]),
         certifier=certifier,
         min_len=min_len,
         max_len=max_len,
