@@ -43,13 +43,13 @@ test_requirements.extend([
 
 about = {}
 with open(os.path.join(here, 'certifiable', '__version__.py')) as f:
-    exec (f.read(), about)
+    exec (f.read(), about)  # pylint: disable=exec-used
 version = about['__version__']
 
 # 'setup.py publish' shortcut.
 if sys.argv[-1] == 'publish':
     version = about['__version__']
-    print("Tagging release as: {v}".format(v=version))
+    print('Tagging release as: {v}'.format(v=version))
     os.system("git tag -a {v} -m 'version {v}'".format(v=version))
     os.system('git push --tags')
     os.system('python setup.py sdist bdist_wheel')

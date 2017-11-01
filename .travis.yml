@@ -20,7 +20,6 @@ install:
 language: python
 python:
 - pypy
-- pypy3
 - 3.6
 - 3.5
 - 2.7

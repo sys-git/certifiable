@@ -27,7 +27,6 @@ __all__ = [
     'certify_dict',
     'certify_dict_schema',
     'certify_iterable_schema',
-    'certify_json',
     'certify_list',
     'certify_set',
     'certify_tuple',

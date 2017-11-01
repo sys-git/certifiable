@@ -208,14 +208,8 @@ An optional `certifier` function allows for fine-grained control of the list's i
 
 
 
-certify_json:
--------------
-
-T.B.D.
-
-
 certify_email:
 --------------
 
-T.B.D.
+Documentation to follow.
 

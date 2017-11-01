@@ -68,7 +68,7 @@ def NAND(*args, **kwargs):
     """
     errors = []
 
-    for index, arg in enumerate(args):
+    for arg in args:
         try:
             arg()
         except CertifierError as e:

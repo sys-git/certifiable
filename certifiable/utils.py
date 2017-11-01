@@ -208,7 +208,7 @@ def enable_from_env(state=None):
             state,
         )
         value = bool(int(x))
-    except Exception:
+    except Exception:  # pylint: disable=broad-except
         value = bool(state)
 
     return enable(value)

@@ -99,6 +99,7 @@ clean-test: ## remove test and coverage artifacts
 
 lint: ## check style with flake8
 	$(FLAKE8) certifiable tests setup.py
+	$(PYLINT) certifiable setup.py
 
 test: ## run tests quickly with the default Python
 

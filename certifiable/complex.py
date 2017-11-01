@@ -2,12 +2,11 @@
 # -*- coding: latin-1 -*-
 
 from collections import Mapping, MutableMapping, MutableSequence, MutableSet, Sequence, Set
-from types import DictType
 
 import email_validator
 import six
 
-from .core import certify_bool, certify_int, certify_text
+from .core import certify_bool, certify_text
 from .errors import CertifierError, CertifierParamError, CertifierTypeError, CertifierValueError
 from .utils import _certify_int_param, certify_params, certify_required, make_certifier
 
@@ -26,14 +25,14 @@ def certify_dict_schema(
     value, schema, key_certifier=None, value_certifier=None, required=None, allow_extra=None,
 ):
     if key_certifier is not None or value_certifier is not None:
-        for key, value in value.items():
+        for key, val in value.items():
             if key_certifier is not None:
                 key_certifier(key)
             if value_certifier is not None:
-                value_certifier(key)
+                value_certifier(val)
 
     if schema:
-        if not isinstance(schema, DictType):
+        if not isinstance(schema, dict):
             raise CertifierParamError(
                 name='schema',
                 value=schema,
@@ -98,7 +97,7 @@ def certify_dict(
     :raises CertifierValueError:
         The value is invalid
     """
-    cls = DictType
+    cls = dict
 
     # Certify our kwargs:
     certify_params(
@@ -120,9 +119,10 @@ def certify_dict(
             message="Expected {t} but the type is {cls!r}".format(
                 cls=cls,
                 t=value.__class__.__name__,
-                value=value,
-                required=required,
-            ))
+            ),
+            value=value,
+            required=required,
+        )
     certify_dict_schema(
         value=value,
         schema=schema,
@@ -172,13 +172,13 @@ def certify_iterable(
         The value to be certified.
     :param tuple(object) types:
         A tuple of types of the expected iterable.
-    :param func\None certifier:
+    :param func|None certifier:
         A function to be called on each value in the iterable to check that it is valid.
-    :param int\None min_len:
+    :param int|None min_len:
         The minimum acceptable length for the iterable.  If None, the minimum length is not checked.
-    :param int\None max_len:
+    :param int|None max_len:
         The maximum acceptable length for the iterable.  If None, the maximum length is not checked.
-    :param tuple\None schema:
+    :param tuple|None schema:
         The schema against which the value should be checked.
         For single-item tuple make sure to add comma at the end of schema tuple, that is,
         for example: schema=(certify_int(),)
@@ -187,7 +187,7 @@ def certify_iterable(
     :raises CertifierTypeError:
         The type is invalid
     :raises CertifierValueError:
-        The valid is invalid
+        The valid is invalid.
     """
     certify_required(
         value=value,

@@ -450,7 +450,7 @@ def certify_enum_value(value, kind=None, required=True):
 
     try:
         kind(value)
-    except:
+    except:  # noqa
         raise CertifierValueError(
             message="value {value!r} is not a valid member of {enum!r}".format(
                 value=value, enum=kind.__name__),

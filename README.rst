@@ -84,8 +84,6 @@ There are more `complex` or compound types into which you can pass `other` certi
 * Set
 * Iterable
 * Dict
-* Json
-* Html
 * Email
 
 
