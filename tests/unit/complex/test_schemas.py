@@ -27,10 +27,14 @@ class ComplexIterableSchemaTestCase(unittest.TestCase):
 
     def test_schema_none_provided(self):
         required = True
-        certify_iterable_schema(
-            value=[],
-            schema=[],
-            required=required,
+        value = []
+        self.assertEqual(
+            certify_iterable_schema(
+                value=value,
+                schema=[],
+                required=required,
+            ),
+            value,
         )
 
     def test_schema_lengths_different_not_enough_values(self):
@@ -130,13 +134,16 @@ class ComplexDictSchemaTestCase(unittest.TestCase):
         value = {'a': 1, 'b': 2}
         schema = {}
         allow_extra = True
-        certify_dict_schema(
-            value=value,
-            schema=schema,
-            key_certifier=None,
-            value_certifier=None,
-            required=True,
-            allow_extra=allow_extra,
+        self.assertEqual(
+            certify_dict_schema(
+                value=value,
+                schema=schema,
+                key_certifier=None,
+                value_certifier=None,
+                required=True,
+                allow_extra=allow_extra,
+            ),
+            value,
         )
 
     def test_invalid_schema(self):

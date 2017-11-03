@@ -31,11 +31,13 @@ class CoreCertifyTextTestCase(unittest.TestCase):
     def test_min_length(self):
         val = six.u('qwerty')
         for min_length in range(0, 7):
-            certify_text(
+            self.assertIs(
+                certify_text(
+                    val,
+                    min_length=min_length,
+                    required=True,
+                ),
                 val,
-                min_length=min_length,
-                required=True,
-
             )
         for min_length in range(7, 10):
             self.assertRaises(

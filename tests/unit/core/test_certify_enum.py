@@ -35,10 +35,13 @@ class CoreCertifyEnumTestCase(unittest.TestCase):
         from tests import TestEnum
 
         i = TestEnum.X
-        certify_enum(
+        self.assertIs(
+            certify_enum(
+                i,
+                kind=TestEnum,
+                required=True,
+            ),
             i,
-            kind=TestEnum,
-            required=True,
         )
 
     def test_not_enum(self):

@@ -12,7 +12,7 @@ from mock import patch, Mock
 
 from certifiable import CertifierTypeError, CertifierValueError, certify_bool, certify_bytes, \
     certify_date, certify_enum, certify_enum_value, certify_int, certify_number, certify_object, \
-    certify_string, certify_text, certify_time, certify_timestamp
+    certify_string, certify_text, certify_time, certify_timestamp, certify_dict
 from certifiable.errors import CertifierParamError
 from certifiable.utils import ENVVAR, _certify_int_param, certify_parameter, certify_required, \
     disable, enable, enable_from_env, is_enabled, make_certifier

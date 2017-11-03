@@ -21,7 +21,10 @@ class CoreCertifyIntTestCase(unittest.TestCase):
 
     def test_int(self):
         for i in [-sys.maxint, sys.maxint, 0, 100000L, -100000L]:
-            certify_int(i)
+            self.assertIs(
+                certify_int(i),
+                i,
+            )
 
     def test_not_int(self):
         for i in ['1.2', 'three', 4.5, complex(1, 2), Decimal(3.2)]:

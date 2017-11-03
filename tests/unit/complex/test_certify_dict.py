@@ -26,9 +26,12 @@ class ComplexDictTestCase(unittest.TestCase):
             mMapping(),
             aMapping(),
         ]:
-            certify_dict(
+            self.assertEqual(
+                certify_dict(
+                    i,
+                    include_collections=True,
+                ),
                 i,
-                include_collections=True,
             )
 
     def test_dict_no_collections(self):

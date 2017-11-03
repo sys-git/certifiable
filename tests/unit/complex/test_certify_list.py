@@ -10,7 +10,7 @@ from mock import Mock, call
 from certifiable import CertifierTypeError, CertifierValueError
 from certifiable.complex import certify_list
 from certifiable.errors import CertifierParamError
-from tests.utils import aSequence, aSet, mSequence, mSet, aIterable
+from tests.utils import aIterable, aSequence, aSet, mSequence, mSet
 
 
 class ComplexListTestCase(unittest.TestCase):
@@ -29,9 +29,12 @@ class ComplexListTestCase(unittest.TestCase):
             aSequence([1, 2, 3]),
             mSequence([4, 5, 6])
         ]:
-            certify_list(
+            self.assertEqual(
+                certify_list(
+                    i,
+                    include_collections=True,
+                ),
                 i,
-                include_collections=True,
             )
 
     def test_list_no_collections(self):

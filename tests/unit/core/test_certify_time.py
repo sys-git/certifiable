@@ -24,9 +24,12 @@ class CoreCertifyTimeTestCase(unittest.TestCase):
         for i in [
             datetime.time(),
         ]:
-            certify_time(
+            self.assertIs(
+                certify_time(
+                    i,
+                    required=True,
+                ),
                 i,
-                required=True,
             )
 
     def test_not_timestamp(self):

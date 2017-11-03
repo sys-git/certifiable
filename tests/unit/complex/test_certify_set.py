@@ -10,7 +10,7 @@ from mock import Mock, call
 from certifiable import CertifierTypeError, CertifierValueError
 from certifiable.complex import certify_set
 from certifiable.errors import CertifierParamError
-from tests.utils import aSet, mSet, aIterable
+from tests.utils import aIterable, aSet, mSet
 
 
 class ComplexSetTestCase(unittest.TestCase):
@@ -28,9 +28,13 @@ class ComplexSetTestCase(unittest.TestCase):
             aSet(),
             mSet(),
         ]:
-            certify_set(
+            self.assertEqual(
+                set(
+                    certify_set(
+                        i,
+                        include_collections=True,
+                    )),
                 i,
-                include_collections=True,
             )
 
     def test_set_no_collections(self):

@@ -23,10 +23,13 @@ class CoreCertifyObjectTestCase(unittest.TestCase):
         from tests import TestEnum
 
         i = TestEnum.X
-        certify_object(
+        self.assertIs(
+            certify_object(
+                i,
+                kind=TestEnum,
+                required=True,
+            ),
             i,
-            kind=TestEnum,
-            required=True,
         )
 
     def test_not_object(self):

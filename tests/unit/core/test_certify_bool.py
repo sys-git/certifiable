@@ -4,7 +4,7 @@
 """Tests for `certifiable.core.certify_bool` method."""
 import unittest
 
-from certifiable import CertifierTypeError, CertifierValueError
+from certifiable import CertifierTypeError
 from certifiable.core import certify_bool
 
 
@@ -22,7 +22,10 @@ class CoreCertifyBoolTestCase(unittest.TestCase):
             True,
             False,
         ]:
-            certify_bool(i)
+            self.assertIs(
+                certify_bool(i),
+                i,
+            )
 
     def test_not_bool(self):
         for i in [1, 0, 2L, 3.9, '1.2', 'three', complex(1, 2)]:

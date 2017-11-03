@@ -41,11 +41,13 @@ class CoreCertifyBytesTestCase(unittest.TestCase):
     def test_min_length(self):
         val = six.b('qwerty')
         for min_length in range(0, 7):
-            certify_bytes(
+            self.assertIs(
+                certify_bytes(
+                    val,
+                    min_length=min_length,
+                    required=True,
+                ),
                 val,
-                min_length=min_length,
-                required=True,
-
             )
         for min_length in range(7, 10):
             self.assertRaises(

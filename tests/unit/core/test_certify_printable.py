@@ -21,11 +21,14 @@ class CoreCertifyPrintableTestCase(unittest.TestCase):
         """Tear down test fixtures, if any."""
 
     def test_visible(self):
-        for val in ['', string.printable, six.u('i'), six.u(string.printable)]:
-            certify_printable(
-                val,
-                nonprintable=False,
-                required=True,
+        for i in ['', string.printable, six.u('i'), six.u(string.printable)]:
+            self.assertIs(
+                certify_printable(
+                    i,
+                    nonprintable=False,
+                    required=True,
+                ),
+                i,
             )
 
     def test_non_visible(self):

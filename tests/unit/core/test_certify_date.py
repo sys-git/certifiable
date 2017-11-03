@@ -24,9 +24,12 @@ class CoreCertifyDateTestCase(unittest.TestCase):
         for i in [
             datetime.date(2017, 11, 30),
         ]:
-            certify_date(
+            self.assertIs(
+                certify_date(
+                    i,
+                    required=True,
+                ),
                 i,
-                required=True,
             )
 
     def test_not_timestamp(self):

@@ -41,10 +41,13 @@ class CoreCertifyEnumValueTestCase(unittest.TestCase):
             TestEnum.X,
             TestEnum.X.value,
         ]:
-            certify_enum_value(
+            self.assertIs(
+                certify_enum_value(
+                    i,
+                    kind=TestEnum,
+                    required=True,
+                ),
                 i,
-                kind=TestEnum,
-                required=True,
             )
 
     def test_not_enum(self):

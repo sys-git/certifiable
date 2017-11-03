@@ -6,7 +6,7 @@ from collections import Mapping, MutableMapping, MutableSequence, MutableSet, Se
 import email_validator
 import six
 
-from .core import certify_bool, certify_text
+from .core import certify_bool, certify_string
 from .errors import CertifierError, CertifierParamError, CertifierTypeError, CertifierValueError
 from .utils import _certify_int_param, certify_params, certify_required, make_certifier
 
@@ -15,15 +15,37 @@ __all__ = [
     'certify_set',
     'certify_tuple',
     'certify_list',
+    'certify_iterable',
     'certify_email',
     'certify_dict_schema',
     'certify_iterable_schema',
 ]
 
 
+@make_certifier()
 def certify_dict_schema(
-    value, schema, key_certifier=None, value_certifier=None, required=None, allow_extra=None,
+    value, schema=None, key_certifier=None, value_certifier=None, required=None, allow_extra=None,
 ):
+    """
+    Certify the dictionary schema.
+
+    :param dict|Mapping|MutableMapping value:
+        The mapping value to certify against the schema.
+    :param object schema:
+        The schema to validate with.
+    :param callable key_certifier:
+        A certifier to use on the dictionary's keys.
+    :param callable value_certifier:
+        A certifier to use on the dictionary's values.
+    :param bool required:
+        Whether the value can't be `None`. Defaults to True.
+    :param bool allow_extra:
+        Set to `True` to ignore extra keys.
+    :return:
+        The certified mapping
+    :rtype:
+        dict|Mapping|MutableMapping
+    """
     if key_certifier is not None or value_certifier is not None:
         for key, val in value.items():
             if key_certifier is not None:
@@ -78,7 +100,7 @@ def certify_dict(
         ...    })
         >>> certifier({'id': self.key, 'count': self.count})
 
-    :param dict value:
+    :param dict|Mapping|MutableMapping value:
         The value to be certified.
     :param dict schema:
         The schema against which the value should be checked.
@@ -92,6 +114,10 @@ def certify_dict(
         callable that receives the value to certify (ignoring schema values).
     :param bool include_collections:
         Include types from collections.
+    :return:
+        The certified dict.
+    :rtype:
+        dict|Mapping|MutableMapping
     :raises CertifierTypeError:
         The type is invalid
     :raises CertifierValueError:
@@ -133,7 +159,22 @@ def certify_dict(
     )
 
 
-def certify_iterable_schema(value, schema, required):
+@make_certifier()
+def certify_iterable_schema(value, schema=None, required=True):
+    """
+    Certify an iterable against a schema.
+
+    :param iterable value:
+        The iterable to certify against the schema.
+    :param iterable schema:
+        The schema to use
+    :param bool required:
+        Whether the value can't be `None`. Defaults to True.
+    :return:
+        The validated iterable.
+    :rtype:
+        iterable
+    """
     if schema is not None:
         if len(schema) != len(value):
             raise CertifierValueError(
@@ -184,6 +225,10 @@ def certify_iterable(
         for example: schema=(certify_int(),)
     :param bool required:
         Whether the value can't be `None`. Defaults to True.
+    :return:
+        The certified iterable.
+    :rtype:
+        iterable
     :raises CertifierTypeError:
         The type is invalid
     :raises CertifierValueError:
@@ -255,13 +300,17 @@ def certify_set(
         Include types from collections.
     :param bool required:
         Whether the value can be `None`. Defaults to True.
+    :return:
+        The certified set.
+    :rtype:
+        set
     :raises CertifierTypeError:
         The type is invalid
     :raises CertifierValueError:
         The valid is invalid
     """
     certify_bool(include_collections, required=True)
-    return certify_iterable(
+    certify_iterable(
         value=value,
         types=tuple([set, MutableSet, Set]) if include_collections else tuple([set]),
         certifier=certifier,
@@ -302,12 +351,16 @@ def certify_tuple(value, certifier=None, min_len=None, max_len=None, required=Tr
         The schema against which the value should be checked.
         For single-item tuple make sure to add comma at the end of schema tuple, that is,
         for example: schema=(certify_int(),)
+    :return:
+        The certified tuple.
+    :rtype:
+        tuple
     :raises CertifierTypeError:
         The type is invalid
     :raises CertifierValueError:
         The valid is invalid
     """
-    return certify_iterable(
+    certify_iterable(
         value=value,
         types=tuple([tuple]),
         certifier=certifier,
@@ -342,13 +395,17 @@ def certify_list(
         for example: schema=(certify_int(),)
     :param bool include_collections:
         Include types from collections.
+    :return:
+        The certified list.
+    :rtype:
+        list
     :raises CertifierTypeError:
         The type is invalid
     :raises CertifierValueError:
         The valid is invalid
     """
     certify_bool(include_collections, required=True)
-    return certify_iterable(
+    certify_iterable(
         value=value,
         types=tuple([list, MutableSequence, Sequence]) if include_collections else tuple([list]),
         certifier=certifier,
@@ -366,10 +423,14 @@ def certify_email(value, required=True):
 
     Does not check that the address exists.
 
-    :param unicode value:
+    :param six.string_types value:
         The email address to certify. **Should be normalized!**
     :param bool required:
         Whether the value can be `None`. Defaults to True.
+    :return:
+        The certified email address.
+    :rtype:
+        six.string_types
     :raises CertifierTypeError:
         The type is invalid
     :raises CertifierValueError:
@@ -379,8 +440,7 @@ def certify_email(value, required=True):
         value=value,
         required=required,
     )
-
-    certify_text(value, min_length=3, max_length=320)
+    certify_string(value, min_length=3, max_length=320)
 
     try:
         certification_result = email_validator.validate_email(
@@ -393,7 +453,7 @@ def certify_email(value, required=True):
                 message="{value!r} is not a valid email address: {ex}".format(
                     value=value,
                     # email_validator returns unicode characters in exception string
-                    ex=repr(unicode(ex))
+                    ex=six.u(repr(ex))
                 ),
                 value=value,
                 required=required,
@@ -401,7 +461,7 @@ def certify_email(value, required=True):
             ex
         )
     else:
-        if value != certification_result['email']:
+        if certification_result['email'] != value:
             raise CertifierValueError(
                 message="{value!r} is not normalized, should be {normalized!r}".format(
                     value=value, normalized=certification_result['email']),

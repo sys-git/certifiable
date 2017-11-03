@@ -27,7 +27,10 @@ class CoreCertifyNumberTestCase(unittest.TestCase):
             100000L, -100000L,
             Decimal(3.2)
         ]:
-            certify_number(i)
+            self.assertIs(
+                certify_number(i),
+                i,
+            )
 
     def test_not_number(self):
         for i in ['1.2', 'three', complex(1, 2)]:

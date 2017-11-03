@@ -10,7 +10,7 @@ from mock import Mock, call
 from certifiable import CertifierTypeError, CertifierValueError
 from certifiable.complex import certify_tuple
 from certifiable.errors import CertifierParamError
-from tests.utils import aSet, mSet, aIterable
+from tests.utils import aIterable, aSet, mSet
 
 
 class ComplexTupleTestCase(unittest.TestCase):
@@ -28,7 +28,10 @@ class ComplexTupleTestCase(unittest.TestCase):
             (1,),
             tuple(),
         ]:
-            certify_tuple(
+            self.assertEqual(
+                certify_tuple(
+                    i,
+                ),
                 i,
             )
 

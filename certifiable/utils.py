@@ -53,9 +53,9 @@ def make_certifier():
             def certify(val):
                 if is_enabled():
                     exec_func(func, val, **kwargs)
-
+                    return val
             if value is not _undefined:
-                certify(value)
+                return certify(value)
             else:
                 return certify
 

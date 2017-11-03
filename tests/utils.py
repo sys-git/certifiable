@@ -15,14 +15,17 @@ class aIterable(Iterable):
 
 
 class aSet(Set):
+    def __init__(self, i=None):
+        self.iter = i or []
+
     def __contains__(self):
         pass
 
     def __iter__(self):
-        pass
+        return iter([])
 
     def __len__(self):
-        pass
+        return len(self.iter)
 
 
 class mSet(MutableSet):
@@ -39,10 +42,10 @@ class mSet(MutableSet):
         pass
 
     def __iter__(self):
-        pass
+        return iter([])
 
     def __len__(self):
-        pass
+        return len(self.iter)
 
 
 class aSequence(Sequence):
@@ -95,7 +98,7 @@ class aMapping(Mapping):
         pass
 
     def __iter__(self):
-        pass
+        return iter([])
 
     def __len__(self):
         pass
@@ -106,7 +109,7 @@ class mMapping(MutableMapping):
         pass
 
     def __iter__(self):
-        pass
+        return iter([])
 
     def __len__(self):
         pass
