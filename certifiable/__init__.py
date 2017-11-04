@@ -17,7 +17,7 @@ from .complex import certify_dict, certify_dict_schema, certify_email, certify_i
 from .core import certify_bool, certify_bytes, certify_date, certify_enum, certify_enum_value, \
     certify_int, certify_number, certify_object, certify_string, certify_text, certify_time, \
     certify_timestamp
-from .errors import CertifierError, CertifierTypeError, CertifierValueError
+from .errors import CertifierError, CertifierParamError, CertifierTypeError, CertifierValueError
 from .operators import (
     ALL, AND, ANY, NAND, XOR, certify_all, certify_any, certify_none, certify_only_one,
 )
@@ -45,6 +45,7 @@ __all__ = [
     'CertifierError',
     'CertifierTypeError',
     'CertifierValueError',
+    'CertifierParamError',
     'AND',
     'ALL',
     'ANY',

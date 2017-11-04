@@ -1,0 +1,8 @@
+#!/usr/bin/env python
+# -*- coding: latin-1 -*-
+#
+
+OK = 0
+CERTIFICATION_VALUE_ERROR = 1
+CERTIFICATION_TYPE_ERROR = 2
+CERTIFICATION_PARAM_ERROR = 3

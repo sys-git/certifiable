@@ -8,7 +8,7 @@ import six
 
 from .core import certify_bool, certify_string
 from .errors import CertifierError, CertifierParamError, CertifierTypeError, CertifierValueError
-from .utils import _certify_int_param, certify_params, certify_required, make_certifier
+from .utils import _RETURN, _certify_int_param, certify_params, certify_required, make_certifier
 
 __all__ = [
     'certify_dict',
@@ -130,10 +130,11 @@ def certify_dict(
         (certify_bool, 'allow_extra', allow_extra),
         (certify_bool, 'include_collections', include_collections),
     )
-    certify_required(
+    if certify_required(
         value=value,
         required=required,
-    )
+    ):
+        return
 
     # Check the type(s):
     types = [cls]
