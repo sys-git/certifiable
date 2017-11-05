@@ -58,11 +58,10 @@ def certify_printable(value, nonprintable=False, required=True):
     certify_params(
         (certify_bool, 'nonprintable', nonprintable),
     )
-    certify_required(
+    if certify_required(
         value=value,
         required=required,
-    )
-    if value is None and not required:
+    ):
         return
     _certify_printable(
         value=value,
@@ -99,11 +98,10 @@ def certify_text(
         (_certify_int_param, 'min_length', min_length, dict(negative=False, required=False)),
         (certify_bool, 'nonprintable', nonprintable),
     )
-    certify_required(
+    if certify_required(
         value=value,
         required=required,
-    )
-    if value is None and not required:
+    ):
         return
 
     if not isinstance(value, six.text_type):
@@ -165,11 +163,10 @@ def certify_string(
         (_certify_int_param, 'min_length', min_length, dict(negative=False, required=False)),
         (certify_int, 'nonprintable', nonprintable),
     )
-    certify_required(
+    if certify_required(
         value=value,
         required=required,
-    )
-    if value is None and not required:
+    ):
         return
 
     if not isinstance(value, six.string_types):
@@ -225,11 +222,10 @@ def certify_int(value, min_value=None, max_value=None, required=True):
         (_certify_int_param, 'max_length', max_value, dict(negative=True, required=False)),
         (_certify_int_param, 'min_length', min_value, dict(negative=True, required=False)),
     )
-    certify_required(
+    if certify_required(
         value=value,
         required=required,
-    )
-    if value is None and not required:
+    ):
         return
 
     if not isinstance(value, six.integer_types):
@@ -279,11 +275,10 @@ def certify_number(value, min_value=None, max_value=None, required=True):
         (_certify_int_param, 'max_value', max_value, dict(negative=True, required=False)),
         (_certify_int_param, 'max_value', max_value, dict(negative=True, required=False)),
     )
-    certify_required(
+    if certify_required(
         value=value,
         required=required,
-    )
-    if value is None and not required:
+    ):
         return
 
     if not isinstance(value, six.integer_types + (float, Decimal)):
@@ -323,11 +318,10 @@ def certify_bool(value, required=True):
     :raises CertifierTypeError:
         The type is invalid
     """
-    certify_required(
+    if certify_required(
         value=value,
         required=required,
-    )
-    if value is None and not required:
+    ):
         return
 
     if not isinstance(value, bool):
@@ -365,11 +359,10 @@ def certify_bytes(value, min_length=None, max_length=None, required=True):
         (_certify_int_param, 'max_value', max_length, dict(negative=False, required=False)),
     )
 
-    certify_required(
+    if certify_required(
         value=value,
         required=required,
-    )
-    if value is None and not required:
+    ):
         return
 
     if not isinstance(value, six.binary_type):
@@ -411,11 +404,10 @@ def certify_enum(value, kind=None, required=True):
     :raises CertifierTypeError:
         The type is invalid
     """
-    certify_required(
+    if certify_required(
         value=value,
         required=required,
-    )
-    if value is None and not required:
+    ):
         return
 
     if not isinstance(value, kind):
@@ -441,11 +433,10 @@ def certify_enum_value(value, kind=None, required=True):
     :raises CertifierValueError:
         The type is invalid
     """
-    certify_required(
+    if certify_required(
         value=value,
         required=required,
-    )
-    if value is None and not required:
+    ):
         return
 
     try:
@@ -475,11 +466,10 @@ def certify_object(value, kind=None, required=True):
     :raises CertifierValueError:
         The value is invalid
     """
-    certify_required(
+    if certify_required(
         value=value,
         required=required,
-    )
-    if value is None and not required:
+    ):
         return
 
     if not isinstance(value, kind):
@@ -513,11 +503,10 @@ def certify_timestamp(value, required=True):
     :raises CertifierTypeError:
         The type is invalid
     """
-    certify_required(
+    if certify_required(
         value=value,
         required=required,
-    )
-    if value is None and not required:
+    ):
         return
 
     if not isinstance(value, datetime):
@@ -541,11 +530,10 @@ def certify_date(value, required=True):
     :raises CertifierTypeError:
         The type is invalid
     """
-    certify_required(
+    if certify_required(
         value=value,
         required=required,
-    )
-    if value is None and not required:
+    ):
         return
 
     if not isinstance(value, date):
@@ -569,11 +557,10 @@ def certify_time(value, required=True):
     :raises CertifierTypeError:
         The type is invalid
     """
-    certify_required(
+    if certify_required(
         value=value,
         required=required,
-    )
-    if value is None and not required:
+    ):
         return
 
     if not isinstance(value, time):

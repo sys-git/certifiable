@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: latin-1 -*-
 #
+import json
 
 from colorama import init
 
@@ -15,14 +16,17 @@ add_core_commands(cli)
 if __name__ == '__main__':
     cli([
         # '--exit',
-        '--verbose',
+        # '--verbose',
         '--verbose',
         '--disable',
         '--required',
         '--json',
         'int',
-        '123',
+        'integer://1.2'
+        # '1234.56789',
         # 'dict',
+        # '',
+        # 'fghjghg',
         # json.dumps({'a': 1}),
         # '--include-collections',
     ])

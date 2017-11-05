@@ -24,7 +24,6 @@ _local = threading.local()
 
 ENVVAR = 'CERTIFIABLE_STATE'
 DEFAULT_STATE = True
-_RETURN = object()
 
 
 def exec_func(fn, val, **kwargs):
@@ -89,7 +88,7 @@ def certify_required(value, required=False):
             raise CertifierValueError(
                 message="required value is None",
             )
-        return _RETURN
+        return True
 
 
 def _certify_int_param(value, negative=True, required=False):

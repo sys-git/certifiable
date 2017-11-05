@@ -8,7 +8,7 @@ import six
 
 from .core import certify_bool, certify_string
 from .errors import CertifierError, CertifierParamError, CertifierTypeError, CertifierValueError
-from .utils import _RETURN, _certify_int_param, certify_params, certify_required, make_certifier
+from .utils import _certify_int_param, certify_params, certify_required, make_certifier
 
 __all__ = [
     'certify_dict',

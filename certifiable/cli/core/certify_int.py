@@ -3,9 +3,9 @@
 #
 
 import click
-from colorama import Back, Fore
+import six
 
-from certifiable import certify_int
+from certifiable import CertifierTypeError, certify_int
 from certifiable.cli.utils import execute_cli_command
 
 
@@ -17,19 +17,31 @@ from certifiable.cli.utils import execute_cli_command
 @click.option(
     '--max-value', type=int,
     help='maximum allowable value')
-@click.argument('value', type=int)
+@click.argument('value', type=str)
 @click.pass_obj
 def cli_certify_core_integer(
     config, min_value, max_value, value,
 ):
     """Console script for certify_int"""
-    verbose = config['verbose']
-    if verbose:
-        click.echo(Back.GREEN + Fore.BLACK + "ACTION: certify-int")
+
+    def parser(x):
+        try:
+            int(x)
+        except ValueError as err:
+            six.raise_from(
+                CertifierTypeError(
+                    message='Not integer: {x}'.format(
+                        x=x,
+                    ),
+                    value=x,
+                ),
+                err,
+            )
 
     execute_cli_command(
-        'certify-int',
+        'integer',
         config,
+        parser,
         certify_int,
         value,
         min_value=min_value,

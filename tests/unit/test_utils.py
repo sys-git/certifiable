@@ -267,12 +267,21 @@ class UtilsEnablerTestCase(unittest.TestCase):
     def test_no_non_required_value_all(self):
         enable()
         self.assertTrue(is_enabled())
-        for fn in funcs + [certify_required]:
-            self.assertIsNone(
-                fn(
+        for fn in funcs:
+            x = fn(
                     None,
                     required=False,
-                ))
+                )
+            if x is not None:
+                pass
+            self.assertIsNone(
+                x
+            )
+        self.assertTrue(
+            certify_required(
+                None,
+                required=False,
+            ))
 
 
 if __name__ == '__main__':
