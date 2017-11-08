@@ -6,7 +6,7 @@ import click
 import six
 
 from certifiable import CertifierTypeError, certify_int
-from certifiable.cli.utils import execute_cli_command
+from certifiable.cli_impl.utils import execute_cli_command, load_json_pickle
 
 
 @click.command(
@@ -17,23 +17,30 @@ from certifiable.cli.utils import execute_cli_command
 @click.option(
     '--max-value', type=int,
     help='maximum allowable value')
-@click.argument('value', type=str)
+@click.argument('value', type=str, nargs=-1)
 @click.pass_obj
 def cli_certify_core_integer(
     config, min_value, max_value, value,
 ):
     """Console script for certify_int"""
 
-    def parser(x):
+    def parser(v):
+        # Attempt a json/pickle decode:
         try:
-            int(x)
-        except ValueError as err:
+            v = load_json_pickle(v, config)
+        except Exception:
+            pass
+
+        # Attempt a straight conversion to integer:
+        try:
+            return int(v)
+        except Exception as err:
             six.raise_from(
                 CertifierTypeError(
                     message='Not integer: {x}'.format(
-                        x=x,
+                        x=v,
                     ),
-                    value=x,
+                    value=v,
                 ),
                 err,
             )
@@ -43,7 +50,7 @@ def cli_certify_core_integer(
         config,
         parser,
         certify_int,
-        value,
+        value[0] if value else None,
         min_value=min_value,
         max_value=max_value,
         required=config['required'],

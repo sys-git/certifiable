@@ -22,6 +22,8 @@ from .operators import (
     ALL, AND, ANY, NAND, XOR, certify_all, certify_any, certify_none, certify_only_one,
 )
 from .utils import certify_required, disable, enable, enable_from_env, is_enabled, make_certifier
+import certifiable.cli
+
 
 __all__ = [
     'certify_dict',

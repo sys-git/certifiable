@@ -18,8 +18,9 @@ from maya import MayaDT
 from six.moves import urllib
 
 import certifiable
-from certifiable import CertifierError, CertifierParamError, CertifierTypeError, CertifierValueError
-from certifiable.cli.error_codes import CERTIFICATION_TYPE_ERROR, CERTIFICATION_VALUE_ERROR, OK
+from certifiable import CertifierError, CertifierParamError, CertifierTypeError, \
+    CertifierValueError, enable
+from certifiable.cli_impl.error_codes import CERTIFICATION_TYPE_ERROR, CERTIFICATION_VALUE_ERROR, OK
 
 
 def create_certifier(config):
@@ -27,7 +28,11 @@ def create_certifier(config):
         if 'name' not in config:
             sys.exit('no certifier specified')
         func_name = config['name']
-        func = getattr(certifiable, func_name, None)
+        func = getattr(
+            certifiable,
+            func_name,
+            None,
+        )
         if func is None:
             sys.exit('invalid certifier specified')
         certifier = func_name(
@@ -45,10 +50,13 @@ def load_json_pickle(what, config):
 
 def dump_config(config):
     for k, v in config.items():
-        click.echo(Fore.RED + Back.GREEN + 'CONFIG: {k} = {v}'.format(
-            k=k,
-            v=v,
-        ))
+        click.echo(
+            Fore.RED +
+            Back.GREEN +
+            'CONFIG: {k} = {v}'.format(
+                k=k,
+                v=v,
+            ))
 
 
 def error_to_code(certifier_error):
@@ -64,7 +72,7 @@ def error_to_code(certifier_error):
 
 def load_value_from_schema(v):
     """
-    Load a value from a schema defined value.
+    Load a value from a schema defined string.
     """
     x = urllib.parse.urlparse(v)
 
@@ -104,12 +112,14 @@ def load_value_from_schema(v):
 
 def parse_value(v, parser, config, description):
     """
-    Convert a string received on the command-line into a value or None.
+    Convert a string received on the command-line into
+    a value or None.
 
     :param str v:
         The value to parse.
     :param parser:
-        The fallback callable to load the value if loading from scheme fails.
+        The fallback callable to load the value if loading
+        from scheme fails.
     :param dict config:
         The config to use.
     :param str description:
@@ -177,13 +187,19 @@ def execute_cli_command(
 ):
     verbose = config['verbose']
     if verbose:
-        click.echo(Back.GREEN + Fore.BLACK + "ACTION: KIND: {d}".format(
-            d=description,
-        ))
+        click.echo(
+            Back.GREEN +
+            Fore.BLACK +
+            "ACTION: KIND: {d}".format(
+                d=description,
+            ))
+
+    # Enabled/Disable certifiable:
+    enable(enabler=not config['disable'])
 
     err = None
     try:
-        # All values comes in as string which need decoding.
+        # All values comes in as a string which need decoding.
         value = parse_value(value, parser, config, description)
 
         if verbose:
@@ -199,23 +215,54 @@ def execute_cli_command(
                     k=k,
                     v=v,
                 ))
-
+        # Execute the core/complex certifier:
         func(value, *args, **kwargs)
     except CertifierValueError as err:
-        click.echo(Back.RED + Fore.BLACK + 'RESULT: ERROR: VALUE: ' + str(err))
+        click.echo(
+            Back.RED +
+            Fore.BLACK +
+            'RESULT: ERROR: VALUE: ' +
+            str(err),
+        )
         if verbose > 1:
-            click.echo(Back.RED + Fore.BLACK + traceback.format_exc())
+            click.echo(
+                Back.RED +
+                Fore.BLACK +
+                traceback.format_exc(),
+            )
     except CertifierTypeError as err:
-        click.echo(Back.RED + Fore.BLACK + 'RESULT: ERROR: KIND: ' + str(err))
+        click.echo(
+            Back.RED +
+            Fore.BLACK +
+            'RESULT: ERROR: KIND: ' +
+            str(err),
+        )
         if verbose > 1:
-            click.echo(Back.RED + Fore.BLACK + traceback.format_exc())
-    except CertifierError as err:
-        click.echo(Back.RED + Fore.BLACK + 'RESULT: ERROR: ' + str(err))
+            click.echo(
+                Back.RED +
+                Fore.BLACK +
+                traceback.format_exc(),
+            )
+    except CertifierError as err:  # pragma: no cover
+        click.echo(
+            Back.RED +
+            Fore.BLACK +
+            'RESULT: ERROR: ' +
+            str(err),
+        )
         if verbose > 1:
-            click.echo(Back.RED + Fore.BLACK + traceback.format_exc())
+            click.echo(
+                Back.RED +
+                Fore.BLACK +
+                traceback.format_exc(),
+            )
     else:
         if verbose:
-            click.echo(Back.GREEN + Fore.BLACK + 'RESULT: OK')
+            click.echo(
+                Back.GREEN +
+                Fore.BLACK +
+                'RESULT: OK',
+            )
 
     sys.exit(
         error_to_code(err)

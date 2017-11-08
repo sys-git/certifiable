@@ -5,7 +5,7 @@
 import click
 
 from certifiable import certify_dict
-from certifiable.cli.utils import create_certifier, execute_cli_command, load_json_pickle
+from certifiable.cli_impl.utils import create_certifier, execute_cli_command, load_json_pickle
 
 
 @click.command('dict', help='certify a dictionary')

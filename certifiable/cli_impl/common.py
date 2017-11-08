@@ -5,8 +5,8 @@ import sys
 
 import click
 
-from certifiable.cli.error_codes import OK
-from certifiable.cli.utils import dump_config
+from certifiable.cli_impl.error_codes import OK
+from certifiable.cli_impl.utils import dump_config
 
 
 @click.group()
@@ -17,7 +17,7 @@ from certifiable.cli.utils import dump_config
     '--exit', 'ext', is_flag=True, default=False,
     help='Dump config and exit')
 @click.option(
-    '--required/--not-required', is_flag=True, default=False,
+    '--required/--not-required', is_flag=True, default=True,
     help='Value is required.')
 @click.option(
     '--json/--pickle', 'assume_json', is_flag=True, default=False,

@@ -246,7 +246,7 @@ def certify_int(value, min_value=None, max_value=None, required=True):
 
     if max_value is not None and value > max_value:
         raise CertifierValueError(
-            message="{value} is more than minimum acceptable {max}".format(
+            message="{value} is more than the maximum acceptable {max}".format(
                 value=value, max=max_value),
             value=value,
             required=required,

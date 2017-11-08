@@ -71,7 +71,7 @@ setup(
     packages=find_packages(include=['certifiable']),
     entry_points={
         'console_scripts': [
-            'certifiable=certifiable.cli:main'
+            'certifiable=certifiable.cli:cli'
         ]
     },
     include_package_data=True,

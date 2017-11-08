@@ -3,10 +3,12 @@
 #
 
 import click
+import six
 from colorama import Back, Fore
 
-from certifiable import CertifierTypeError, certify_int
-from certifiable.cli.utils import execute_cli_command
+from certifiable import CertifierTypeError
+from certifiable.cli_impl.utils import execute_cli_command, load_json_pickle
+from certifiable.core import certify_number
 
 
 @click.command(
@@ -17,7 +19,7 @@ from certifiable.cli.utils import execute_cli_command
 @click.option(
     '--max-value', type=int,
     help='maximum allowable value')
-@click.argument('value', type=str)
+@click.argument('value', type=str, nargs=-1)
 @click.pass_obj
 def cli_certify_core_number(
     config, min_value, max_value, value,
@@ -28,6 +30,13 @@ def cli_certify_core_number(
         click.echo(Back.GREEN + Fore.BLACK + "ACTION: certify-int")
 
     def parser(v):
+        # Attempt a json/pickle decode:
+        try:
+            v = load_json_pickle(v, config)
+        except Exception:
+            pass
+
+        # Attempt a straight conversion to float or integer:
         try:
             if v.find('.') != -1:
                 # Assume is float:
@@ -35,22 +44,24 @@ def cli_certify_core_number(
             else:
                 # Assume is int:
                 v = int(v)
-        except Exception as e:
-            raise CertifierTypeError(
-                message='Expecting integer, got: <{value}>'.format(
-                    value=value,
+            return v
+        except Exception as err:
+            six.raise_from(
+                CertifierTypeError(
+                    message='Not integer or float: {v}'.format(
+                        v=v,
+                    ),
+                    value=v,
                 ),
-                required=config['required'],
-                value=v,
+                err,
             )
-        return v
 
     execute_cli_command(
-        'certify-int',
+        'number',
         config,
         parser,
-        certify_int,
-        value,
+        certify_number,
+        value[0] if value else None,
         min_value=min_value,
         max_value=max_value,
         required=config['required'],

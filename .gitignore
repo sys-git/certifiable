@@ -94,3 +94,6 @@ source-commands.json
 
 # pyenv python configuration file
 .python-version
+
+.github/*
+.editorconfig
