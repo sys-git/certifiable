@@ -7,6 +7,6 @@ nose-cov==1.6
 nose-parameterized==0.6.0
 pylint
 tox==2.8.2
-Sphinx==1.6.3
+Sphinx==3.1.0
 Click>=6.0
 PyYAML==3.12
