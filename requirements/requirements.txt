@@ -1,7 +1,7 @@
 # Requirements the package will ship with (not development or test).
 enum34==1.1.6
 six==1.11.0
-email_validator==1.0.3
+email_validator==2.0.0
 lxml==3.8.0
 colorama==0.3.9
 maya==0.3.3
